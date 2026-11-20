@@ -13,4 +13,11 @@ runs:
       working-directory: ${{ github.workspace }}/kernel
       run: |
         set -euo pipefail
-        python3 "${GITHUB_WORKSPACE}/.github/scripts/trim_sukisu_managers.py" SukiSU-Ultra
+        F="SukiSU-Ultra/kernel/manager/apk_sign.c"
+        if grep -q 'apk_sign_keys\[\]' "$F"; then
+          # old layout (builtin / main <= table era): cert table
+          python3 "${GITHUB_WORKSPACE}/.github/scripts/trim_sukisu_managers.py" SukiSU-Ultra
+        else
+          # builtin-new layout: chain of check_v2_signature() calls
+          python3 "${GITHUB_WORKSPACE}/.github/scripts/trim_sukisu_single_signer.py" SukiSU-Ultra
+        fi
