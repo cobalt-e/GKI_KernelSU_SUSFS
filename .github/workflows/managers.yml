@@ -171,7 +171,7 @@ jobs:
             repo: https://github.com/Baka-SU/BakaSU.git
             ref: main
           - flavor: sukisu-ultra
-            repo: https://github.com/SukiSU-Ultra/SukiSU-Ultra.git
+            repo: https://github.com/SukiSU-Nova/SukiSU-Nova.git
             ref: main
           - flavor: kowsu
             repo: https://github.com/KOWX712/KernelSU.git
@@ -355,7 +355,7 @@ jobs:
             repo: https://github.com/Baka-SU/BakaSU.git
             ref: main
           - flavor: sukisu-ultra
-            repo: https://github.com/SukiSU-Ultra/SukiSU-Ultra.git
+            repo: https://github.com/SukiSU-Nova/SukiSU-Nova.git
             ref: main
           - flavor: kowsu
             repo: https://github.com/KOWX712/KernelSU.git
