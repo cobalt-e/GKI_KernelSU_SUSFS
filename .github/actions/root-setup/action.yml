@@ -157,6 +157,21 @@ runs:
         echo "ROOT_VERSION=$root_version" >> "$GITHUB_ENV"
         echo "ROOT_COMMIT=$actual_commit" >> "$GITHUB_ENV"
 
+    - name: Keep DWARF in ksu.o (gendwarfksyms needs it on 6.12 GKI)
+      if: inputs.flavor == 'sukisu-ultra'
+      shell: bash
+      working-directory: ${{ github.workspace }}/kernel
+      run: |
+        set -euo pipefail
+        M="SukiSU-Ultra/kernel/Makefile"
+        if grep -qE '^CFLAGS_ksu\.o \+=.*[[:space:]]-g0\b' "$M"; then
+          sed -i '/^CFLAGS_ksu\.o += /s/[[:space:]]-g0\b//' "$M"
+          grep -q -- '-g0' "$M" && { echo "ERROR: -g0 still present" >&2; exit 1; }
+          echo "[*] Removed -g0 from CFLAGS_ksu.o"
+        else
+          echo "[*] No -g0 on CFLAGS_ksu.o; nothing to do"
+        fi
+
     - name: Enable root configuration
       shell: bash
       working-directory: ${{ github.workspace }}/kernel/common
