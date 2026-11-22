@@ -201,7 +201,7 @@ runs:
             sukisu-ultra)
               # SukiSU-Nova no longer uses build-manager.yml, we need to get from Github Releases instead
               owner="SukiSU-Nova"; repo="SukiSU-Nova"; want=""; src="release"
-              resolve_stock "${mc:-${INPUT_SUKISU_ULTRA_COMMIT:-}}" sukisu_ultra_commit https://github.com/SukiSU-Nova/SukiSU-Nova.git main
+              resolve_stock "${mc:-${INPUT_SUKISU_ULTRA_COMMIT:-}}" sukisu_ultra_commit https://github.com/SukiSU-Nova/SukiSU-Nova.git builtin-new
               ;;
             finasu)
               owner="LyraVoid"; repo="FinaSU"; wf="build-manager.yml"
