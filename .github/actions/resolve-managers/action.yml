@@ -146,7 +146,7 @@ runs:
         REC=""
         resolve_one() { # flavor
           local flavor="$1"
-          local owner repo wf branch want stock pinned run_id mc note=""
+          local owner repo wf branch want stock pinned run_id mc note="" src="run"
           # Exact commit this flavor's kernel embeds (empty when called from
           # managers.yml, which pins through the individual *_commit inputs).
           mc="$(matrix_commit "$flavor")"
@@ -199,8 +199,8 @@ runs:
               resolve_stock "${mc:-${INPUT_BAKASU_COMMIT:-}}" bakasu_commit https://github.com/Baka-SU/BakaSU.git main
               ;;
             sukisu-ultra)
-              owner="SukiSU-Nova"; repo="SukiSU-Nova"; wf="build-manager.yml"
-              branch="main"; want="Manager,Spoofed-Manager"
+              # SukiSU-Nova no longer uses build-manager.yml, we need to get from Github Releases instead
+              owner="SukiSU-Nova"; repo="SukiSU-Nova"; want=""; src="release"
               resolve_stock "${mc:-${INPUT_SUKISU_ULTRA_COMMIT:-}}" sukisu_ultra_commit https://github.com/SukiSU-Nova/SukiSU-Nova.git main
               ;;
             finasu)
@@ -221,6 +221,15 @@ runs:
               ;;
           esac
           stock="$STOCK"; pinned="$PINNED"
+
+          # Emit record for release-sourced flavors (currently just SukiSU-Nova) now,
+          # and skip the run lookup below.
+          if [[ "$src" == "release" ]]; then
+            printf -v REC
+            '{"flavor":"%s","owner":"%s","repo":"%s","source":"release","run_id":0,"stock":"%s","want":"%s","note":"release"}' \
+              "$flavor" "$owner" "$repo" "$stock" "$want"
+            return 0
+          fi
 
           run_id="$(find_run "$owner" "$repo" "$wf" "$stock")"
           if [[ -z "$run_id" ]]; then
