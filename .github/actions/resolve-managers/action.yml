@@ -225,7 +225,7 @@ runs:
           # Emit record for release-sourced flavors (currently just SukiSU-Nova) now,
           # and skip the run lookup below.
           if [[ "$src" == "release" ]]; then
-            printf -v REC
+            printf -v REC \
             '{"flavor":"%s","owner":"%s","repo":"%s","source":"release","run_id":0,"stock":"%s","want":"%s","note":"release"}' \
               "$flavor" "$owner" "$repo" "$stock" "$want"
             return 0
