@@ -121,6 +121,20 @@ runs:
           done < "$MANIFEST"
           mv "$tmp_manifest" "$MANIFEST"
         fi
+        # SukiSU-Nova: apk must be taken from GitHub Releases, which does not include a universal build
+        # This script only takes the arm64-v8a release and would need to be changed for other ABIs
+        if grep -q "SukiSU-Nova|SukiSU-Nova|" "$MANIFEST" 2>/dev/null; then
+          tmp_manifest="${MANIFEST}.filtered"
+          : > "$tmp_manifest"
+          while IFS='|' read -r o r n; do
+            [ -n "$n" ] || continue
+            if [ "$o" = "SukiSU-Nova" ] && [ "$r" = "SukiSU-Nova" ] && [[ "$n" != *arm64-v8a* ]]; then
+              echo "Dropping SukiSU-Nova non-arm64 $n" >&2; rm -f "$OUT_APKS/$n"; continue
+            fi
+            echo "$o|$r|$n" >> "$tmp_manifest"
+          done < "$MANIFEST"
+          mv "$tmp_manifest" "$MANIFEST"
+        fi
         # Build the flat apk list from the manifest (single source of truth)
         APK_JSON="[]"
         while IFS='|' read -r o r n; do
