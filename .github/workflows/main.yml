@@ -180,6 +180,7 @@ jobs:
       feature_set: ${{ steps.features.outputs.feature_set }}
       manager_list: ${{ steps.manager.outputs.manager_list }}
     steps:
+      - run: echo "dispatch brand=[${{ inputs.brand_name }}]"
       - uses: actions/checkout@v7
 
       - name: Validate page size selection
