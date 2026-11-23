@@ -94,6 +94,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
+      - run: echo "build.yml brand=[${{ inputs.brand_name }}]"
       - name: Checkout Repository
         uses: actions/checkout@v7
 
