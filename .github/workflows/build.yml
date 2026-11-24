@@ -97,10 +97,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v7
 
-      - name: Debug - build.yml brand_name
-        shell: bash
-        run: echo "build.yml brand=[${{ inputs.brand_name }}]"
-
       - name: Download Prefetched Stock Configs
         # Hard requirement: without the stock configs there is nothing to build
         # against, so this waits for the producer leg and then fails the job
