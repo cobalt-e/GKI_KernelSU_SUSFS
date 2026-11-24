@@ -297,6 +297,13 @@ jobs:
           sublevel: ${{ steps.extract.outputs.sublevel }}
           root_flavor: ${{ inputs.root_flavor }}
 
+      - name: Fix selinuxfs.c access seqno split
+        if: inputs.root_flavor != '' && inputs.root_flavor != 'none'
+        shell: bash
+        working-directory: ${{ github.workspace }}/kernel/common
+        run: |
+          python3 "${{ github.workspace }}/.github/scripts/fix_selinuxfs_access_seqno.py"
+
       - name: Baseband Guard
         if: (contains(inputs.feature_set, 'BBG') || inputs.feature_set == 'All')
         uses: ./.github/actions/bbg
